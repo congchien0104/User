@@ -10,6 +10,42 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Table from 'react-bootstrap/Table';
 
 class TaskForm extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      name : '',
+      status : true
+    };
+  }
+  onCloseForm = () =>{
+    this.props.onCloseForm();
+  }
+  onChange = (event) => {
+    var target = event.target;
+    var name = target.name;
+    var value = target.value;
+    if(name === 'status'){
+      value = target.value === 'true' ? true : false;
+    }
+    this.setState({
+      [name] : value
+    });
+  }
+  onSubmit = (event) =>{
+    event.preventDefault();
+    //console.log(this.state);
+    this.props.onSubmit(this.state);
+    // Cancel & Close Form
+    this.onClear();
+    this.onCloseForm();
+
+  }
+  onClear = () =>{
+    this.setState({
+      name : '',
+      status : false
+    });
+  }
   render() {
     return (
         <div>
@@ -17,31 +53,36 @@ class TaskForm extends Component {
               <div className="panel-heading">
               <h3 className="panel-title">
                 Thêm Công Việc
-                <span className="fa fa-times-cirle text-right"></span>
+                
+                <Button variant="primary" onClick={this.onCloseForm}>Close</Button>{' '}
 
               </h3>
 
               </div>
             </div>
-            <Form>
+            <Form onSubmit={this.onSubmit}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Tên:</Form.Label>
-                <Form.Control type="text" />
+                <Form.Control type="text" name="name" value={this.state.name} 
+                  onChange={this.onChange} />
               </Form.Group>
 
               <Form.Group controlId="exampleForm.ControlSelect1">
                 <Form.Label>Trạng Thái</Form.Label>
-                <Form.Control as="select">
-                  <option>Kích hoạt</option>
-                  <option>Ẩn</option>
+                <Form.Control as="select" name="status" value={this.state.status} 
+                  onChange={this.onChange}>
+                  <option value={true}>Kích hoạt</option>
+                  <option value={false}>Ẩn</option>
                 </Form.Control>
               </Form.Group>
 
               
-              <Button variant="primary" type="button">
-                Submit
+              <Button variant="primary" type="submit">
+                Save
               </Button>
-              <Button variant="danger">Danger</Button>
+              <Button variant="danger" type="button" 
+                onClick={this.onClear}
+              >Delete</Button>
             </Form>
 
           </div>

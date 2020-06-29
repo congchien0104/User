@@ -11,12 +11,24 @@ import Table from 'react-bootstrap/Table';
 
 class TaskItem extends Component {
   render() {
+    var { task, index } = this.props;
+    
+    // onUpdatStatus = () =>{
+    //   console.log(this.props.task.id);
+    // }
     return (
         <tr>
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
+            <td>{ index + 1 }</td>
+            <td>{ task.name }</td>
+            <td>
+              <span className="label label-danger"
+                    onClick={this.onUpdatStatus}
+              
+                >{ task.status === true ? "Kich hoat" : "An" }</span>
+            </td>
+            <td><Button variant="warning">Update</Button>{' '}
+                <Button variant="danger">Delete</Button>
+            </td>
         </tr>
     );
   }
