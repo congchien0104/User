@@ -13,9 +13,38 @@ class TaskForm extends Component {
   constructor(props){
     super(props);
     this.state = {
+      id : '',
       name : '',
       status : true
     };
+  }
+  componentDidMount(){
+    //console.log('componentDidMount');
+    if(this.props.task){
+      this.setState({
+        id : this.props.task.id,
+        name : this.props.task.name,
+        status : this.props.task.status
+      });
+      console.log(this.state);
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    //console.log(nextProps);
+    if(nextProps && nextProps.task){
+      this.setState({
+        id : nextProps.task.id,
+        name : nextProps.task.name,
+        status : nextProps.task.status
+      });
+    }else if(!nextProps.task){
+      //console.log('Edit --> Add');
+      this.state = {
+        id : '',
+        name : '',
+        status : true
+      };
+    }
   }
   onCloseForm = () =>{
     this.props.onCloseForm();
@@ -47,12 +76,13 @@ class TaskForm extends Component {
     });
   }
   render() {
+    var { id } = this.state;
     return (
         <div>
             <div className="panel panel-warning">
               <div className="panel-heading">
               <h3 className="panel-title">
-                Thêm Công Việc
+                { id !== '' ? "Update Task" : "Add Task"}
                 
                 <Button variant="primary" onClick={this.onCloseForm}>Close</Button>{' '}
 

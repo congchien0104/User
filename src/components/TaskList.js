@@ -11,11 +11,39 @@ import Table from 'react-bootstrap/Table';
 import TaskItem from './TaskItem';
 
 class TaskList extends Component {
-  render() {
-    var { tasks} = this.props;
-    var elmTasks = tasks.map((task,index) =>{
-        return <TaskItem key={task.id} index={index} task={task}/>
+  
+  constructor(props){
+      super(props);
+      this.state = {
+          filterName: '',
+          filterStatus : -1 // all: -1 Kich Hoat: 0 An: 1
+      };
+  }
+  onChange = (event) =>{
+    var target = event.target;
+    var name = target.name;
+    var value = target.value;
+    this.props.onFilter(
+        name === 'filterName' ? value : this.state.filterName,
+        name === 'filterStatus' ? value : this.state.filterStatus,
+      )
+    this.setState({
+        [name] : value
     });
+ }
+  render() {
+    var { tasks} = this.props;  // var tasks = this.props.tasks;
+    var { filterName, filterStatus } = this.state;
+
+    var elmTasks = tasks.map((task,index) =>{
+        return <TaskItem key={task.id} index={index} task={task}
+                   onUpdateStatus={this.props.onUpdateStatus}
+                   onDelete={this.props.onDelete}
+                   onUpdate={this.props.onUpdate}
+                
+                />
+    });
+    
     return (
         <Table striped bordered hover>
             <thead>
@@ -29,12 +57,23 @@ class TaskList extends Component {
             <tbody>
                 <tr>
                     <td></td>
-                    <td><FormControl type="text" placeholder="Search" className="mr-sm-2" /></td>
+                    <td><FormControl type="text" placeholder="Search" className="mr-sm-2" 
+                                     name="filterName"
+                                     value={filterName}
+                                     onChange={ this.onChange }
+
+                    /></td>
                     <td>
                     <Form.Group controlId="exampleForm.ControlSelect1">
-                        <Form.Control as="select">
-                        <option>Kích hoạt</option>
-                        <option>Ẩn</option>
+                        <Form.Control as="select"
+                                     name="filterStatus"
+                                     value={filterStatus}
+                                     onChange={ this.onChange }
+                           
+                        >
+                        <option value={-1}>All</option>
+                        <option value={0}>Kích hoạt</option>
+                        <option value={1}>Ẩn</option>
                         </Form.Control>
                     </Form.Group>
                     </td>

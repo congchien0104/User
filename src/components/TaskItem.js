@@ -10,24 +10,36 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Table from 'react-bootstrap/Table';
 
 class TaskItem extends Component {
+  onUpdateStatus = () =>{
+    //console.log(this.props.task.id);
+    this.props.onUpdateStatus(this.props.task.id);
+  }
+  onDelete = () =>{
+    //console.log(this.props.task.id);
+    this.props.onDelete(this.props.task.id);
+  }
+  onUpdate = () =>{
+    //console.log(this.props.task.id);
+    this.props.onUpdate(this.props.task.id);
+  }
   render() {
     var { task, index } = this.props;
     
-    // onUpdatStatus = () =>{
-    //   console.log(this.props.task.id);
-    // }
     return (
         <tr>
             <td>{ index + 1 }</td>
             <td>{ task.name }</td>
             <td>
               <span className="label label-danger"
-                    onClick={this.onUpdatStatus}
-              
+                    onClick={this.onUpdateStatus}
                 >{ task.status === true ? "Kich hoat" : "An" }</span>
             </td>
-            <td><Button variant="warning">Update</Button>{' '}
-                <Button variant="danger">Delete</Button>
+            <td><Button variant="warning" type="button"
+                onClick={ this.onUpdate}
+            >Edit</Button>{' '}
+                <Button variant="danger" type="button"
+                    onClick={this.onDelete}
+                >Delete</Button>
             </td>
         </tr>
     );
